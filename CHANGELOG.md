@@ -12,6 +12,13 @@ and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where
   - The `.d` suffix conventionally means "directory of config snippets"
   - New name clearly indicates it's a single file with default SSH settings
 
+### Fixed
+- SSH permissions now enforced during installation
+  - `install.sh` now sets `~/.ssh` to 700 (drwx------)
+  - `install.sh` now sets `~/.ssh/config` to 600 (-rw-------)
+  - Prevents SSH from silently ignoring config files due to incorrect permissions
+  - Critical for containers, shared home directories, and fresh environments
+
 ## [2026-01-11.5]
 
 ### Changed

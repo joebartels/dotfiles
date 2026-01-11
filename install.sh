@@ -100,6 +100,10 @@ append_include_if_needed() {
     # Create parent directory if it doesn't exist
     mkdir -p "$(dirname "$target_file")"
 
+    # Set correct permissions on ~/.ssh directory
+    # SSH requires 700 (drwx------) or it will ignore configs
+    chmod 700 "$(dirname "$target_file")" 2>/dev/null || true
+
     # Create target file if it doesn't exist
     if [ ! -f "$target_file" ]; then
         echo "Creating $target_file"
@@ -115,6 +119,10 @@ append_include_if_needed() {
         echo "# Include dotfiles SSH configuration (defaults)" >> "$target_file"
         echo "$include_line" >> "$target_file"
     fi
+
+    # Set correct permissions on SSH config file
+    # SSH requires 600 (or at least not group/world writable) or it will ignore the file
+    chmod 600 "$target_file" 2>/dev/null || true
 }
 
 # Install zsh configs
