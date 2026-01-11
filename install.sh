@@ -86,6 +86,32 @@ append_source_if_needed() {
     fi
 }
 
+# Function to append Include directive for SSH config
+append_include_if_needed() {
+    local include_file="$1"
+    local target_file="$2"
+    local include_line="$3"
+
+    # Create parent directory if it doesn't exist
+    mkdir -p "$(dirname "$target_file")"
+
+    # Create target file if it doesn't exist
+    if [ ! -f "$target_file" ]; then
+        echo "Creating $target_file"
+        touch "$target_file"
+    fi
+
+    # Check if Include line already exists
+    if grep -Fq "$include_line" "$target_file"; then
+        echo "  → $target_file already includes dotfiles, skipping"
+    else
+        echo "Adding Include directive to $target_file"
+        echo "" >> "$target_file"
+        echo "# Include dotfiles SSH configuration (defaults)" >> "$target_file"
+        echo "$include_line" >> "$target_file"
+    fi
+}
+
 # Install zsh configs
 echo -e "\n=== Installing zsh configuration ==="
 append_source_if_needed "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc" "[ -f \"$DOTFILES_DIR/zsh/.zshrc\" ] && source \"$DOTFILES_DIR/zsh/.zshrc\""
@@ -99,7 +125,7 @@ backup_and_link "$DOTFILES_DIR/config/git/ignore" "$HOME/.config/git/ignore"
 
 # Install SSH config
 echo -e "\n=== Installing SSH configuration ==="
-backup_and_link "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
+append_include_if_needed "$DOTFILES_DIR/ssh/config.d" "$HOME/.ssh/config" "Include $DOTFILES_DIR/ssh/config.d"
 
 # Install GitHub CLI config
 echo -e "\n=== Installing GitHub CLI configuration ==="

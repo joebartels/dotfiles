@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where `.<version>` is optional (e.g. if signficant changes made on same day)
 
+## [2026-01-11.4]
+
+### Changed
+- **BREAKING**: Changed SSH Include approach from prepend to append
+  - Renamed `prepend_include_if_needed()` to `append_include_if_needed()` in `install.sh`
+  - SSH Include directive now appended to end of `~/.ssh/config` instead of prepended
+  - Host-specific SSH configs now take precedence over dotfiles (first match wins in SSH)
+  - Dotfiles SSH config becomes a fallback/default configuration
+- Updated README.md Philosophy section to explain SSH precedence behavior
+
+## [2026-01-11.3]
+
+### Changed
+- Fixed SSH configuration to be truly universal
+  - Removed environment-specific `Match all` directive from `ssh/config.d`
+  - Removed codespaces-specific Include directive
+- Improved `prepend_include_if_needed()` function in `install.sh`
+  - Now creates `~/.ssh` directory if it doesn't exist
+  - Handles fresh systems with no existing SSH configuration
+
 ## [2026-01-11.2]
 
 ### Changed
@@ -16,8 +36,12 @@ and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where
   - `install.sh` now appends source lines to existing shell config files instead of replacing them
   - Preserves existing configurations and system defaults
   - Safe to use in remote/cloud environments without breaking system configs
+- Changed SSH configuration to use Include pattern
+  - Renamed `ssh/config` to `ssh/config.d`
+  - `install.sh` now prepends Include directive to existing `~/.ssh/config` instead of replacing it
+  - Preserves existing SSH configurations on remote systems
 - Updated README.md with new "Philosophy" section explaining minimal, universal design
-- Updated README.md installation instructions to reflect source-based approach
+- Updated README.md installation instructions to reflect source-based and Include-based approaches
 
 ### Removed
 - All environment-specific configurations from committed files:

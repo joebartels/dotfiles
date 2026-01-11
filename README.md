@@ -16,7 +16,7 @@ This repository contains configuration files for:
   - `config/git/ignore` - Global gitignore patterns
 
 - **SSH**: Secure shell configuration
-  - `ssh/config` - SSH host configurations
+  - `ssh/config.d` - SSH host configurations (included by your main `~/.ssh/config`)
 
 - **GitHub CLI**: GitHub command-line tool settings
   - `config/gh/config.yml` - GitHub CLI preferences
@@ -33,6 +33,7 @@ This dotfiles repository is designed to be **minimal and universally safe**:
 - **No dependencies** on specific tools (oh-my-zsh, themes, etc.)
 - **Non-destructive** installation that preserves your existing configurations
 - **Source-based approach** for shell configs means they work alongside system defaults
+- **SSH configs are fallback defaults** - appended last so your existing host configurations always take precedence
 
 If you have environment-specific configurations (like tool paths, framework initializations, or custom themes), keep those in your local shell config files. This repository provides universal utilities that enhance any environment.
 
@@ -52,7 +53,8 @@ The script will:
 1. Backup any existing configuration files that would be replaced
 2. Create local configuration files from templates (`.zshrc.local`, `.gitconfig.local`)
 3. **For shell configs** (`.zshrc`, `.zprofile`, `.zshenv`): Append source lines to your existing files (or create them if they don't exist)
-4. **For other configs** (git, ssh, etc.): Create symlinks from your home directory to this repo
+4. **For SSH config**: Append an Include directive to your existing `~/.ssh/config` (host configs take precedence, dotfiles provide defaults)
+5. **For other configs** (git, GitHub CLI, etc.): Create symlinks from your home directory to this repo
 
 ### Required: Configure Personal Information
 
@@ -80,12 +82,12 @@ echo '[ -f "$HOME/.dotfiles/zsh/.zshrc" ] && source "$HOME/.dotfiles/zsh/.zshrc"
 echo '[ -f "$HOME/.dotfiles/zsh/.zprofile" ] && source "$HOME/.dotfiles/zsh/.zprofile"' >> ~/.zprofile
 echo '[ -f "$HOME/.dotfiles/zsh/.zshenv" ] && source "$HOME/.dotfiles/zsh/.zshenv"' >> ~/.zshenv
 
+# SSH - append Include directive to your existing config
+echo "Include $HOME/.dotfiles/ssh/config.d" >> ~/.ssh/config
+
 # Git
 ln -s ~/.dotfiles/git/.gitconfig ~/.gitconfig
 ln -s ~/.dotfiles/config/git/ignore ~/.config/git/ignore
-
-# SSH
-ln -s ~/.dotfiles/ssh/config ~/.ssh/config
 
 # GitHub CLI
 ln -s ~/.dotfiles/config/gh/config.yml ~/.config/gh/config.yml
@@ -146,7 +148,7 @@ dotfiles/
 ├── git/
 │   └── .gitconfig       # Git global configuration
 ├── ssh/
-│   └── config           # SSH client configuration
+│   └── config.d         # SSH client configuration
 ├── zsh/
 │   ├── .zshrc           # Zsh configuration
 │   ├── .zprofile        # Zsh login shell config

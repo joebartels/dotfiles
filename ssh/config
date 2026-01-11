@@ -1,10 +1,5 @@
-Match all
-  Include ~/.ssh/codespaces
+# Main SSH Configuration
+# This file is managed by dotfiles - use ssh/config.d for your actual configurations
 
-Host *
-  AddKeysToAgent yes
-  UseKeychain yes
-
-Host github.com
-  IdentityFile ~/.ssh/github_rsa
-  IdentitiesOnly yes
+# Include dotfiles SSH configuration
+Include ~/.dotfiles/ssh/config.d
