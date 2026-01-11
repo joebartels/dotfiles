@@ -83,23 +83,6 @@ echo -e "\n=== Installing GitHub CLI configuration ==="
 backup_and_link "$DOTFILES_DIR/config/gh/config.yml" "$HOME/.config/gh/config.yml"
 backup_and_link "$DOTFILES_DIR/config/gh/hosts.yml" "$HOME/.config/gh/hosts.yml"
 
-# Install iTerm2 config
-echo -e "\n=== Installing iTerm2 configuration ==="
-if [ -f "$DOTFILES_DIR/config/iterm2/com.googlecode.iterm2.plist" ]; then
-    # Convert XML plist back to binary and install
-    echo "Converting iTerm2 plist to binary format"
-    plutil -convert binary1 "$DOTFILES_DIR/config/iterm2/com.googlecode.iterm2.plist" -o /tmp/com.googlecode.iterm2.plist
-
-    if [ -f "$HOME/Library/Preferences/com.googlecode.iterm2.plist" ]; then
-        echo "Backing up existing iTerm2 preferences"
-        cp "$HOME/Library/Preferences/com.googlecode.iterm2.plist" "$BACKUP_DIR/"
-    fi
-
-    cp /tmp/com.googlecode.iterm2.plist "$HOME/Library/Preferences/com.googlecode.iterm2.plist"
-    rm /tmp/com.googlecode.iterm2.plist
-    echo "iTerm2 preferences installed (restart iTerm2 to apply)"
-fi
-
 # Install uv config
 echo -e "\n=== Installing uv configuration ==="
 backup_and_link "$DOTFILES_DIR/config/uv/uv-receipt.json" "$HOME/.config/uv/uv-receipt.json"
@@ -109,5 +92,4 @@ echo "Backups are stored in: $BACKUP_DIR"
 echo ""
 echo "Next steps:"
 echo "  1. Restart your terminal or run: source ~/.zshrc"
-echo "  2. Restart iTerm2 if you use it"
-echo "  3. Review any backed up files in $BACKUP_DIR"
+echo "  2. Review any backed up files in $BACKUP_DIR"

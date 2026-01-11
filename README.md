@@ -22,9 +22,6 @@ This repository contains configuration files for:
   - `config/gh/config.yml` - GitHub CLI preferences
   - `config/gh/hosts.yml` - GitHub hosts configuration
 
-- **iTerm2**: Terminal emulator preferences
-  - `config/iterm2/com.googlecode.iterm2.plist` - iTerm2 settings (XML format)
-
 - **uv**: Python package manager configuration
   - `config/uv/uv-receipt.json` - uv installation receipt
 
@@ -44,7 +41,6 @@ The script will:
 1. Backup your existing dotfiles to `~/.dotfiles_backup_TIMESTAMP`
 2. Create local configuration files from templates (`.zshrc.local`, `.gitconfig.local`)
 3. Create symlinks from your home directory to the dotfiles in this repo
-4. Install iTerm2 preferences (if applicable)
 
 ### Required: Configure Personal Information
 
@@ -87,16 +83,6 @@ ln -s ~/.dotfiles/config/gh/hosts.yml ~/.config/gh/hosts.yml
 ln -s ~/.dotfiles/config/uv/uv-receipt.json ~/.config/uv/uv-receipt.json
 ```
 
-### iTerm2 Configuration
-
-For iTerm2, the preferences file needs special handling:
-
-```bash
-plutil -convert binary1 config/iterm2/com.googlecode.iterm2.plist -o ~/Library/Preferences/com.googlecode.iterm2.plist
-```
-
-Then restart iTerm2 to apply the settings.
-
 ## Updating
 
 To update your dotfiles:
@@ -106,7 +92,7 @@ cd ~/.dotfiles
 git pull origin main
 ```
 
-Since the files are symlinked, changes will take effect immediately (except iTerm2, which requires a restart).
+Since the files are symlinked, changes will take effect immediately.
 
 ## Customization
 
@@ -144,7 +130,6 @@ dotfiles/
 ├── config/
 │   ├── gh/              # GitHub CLI configuration
 │   ├── git/             # Git extended configuration
-│   ├── iterm2/          # iTerm2 preferences
 │   └── uv/              # uv Python package manager
 ├── git/
 │   └── .gitconfig       # Git global configuration

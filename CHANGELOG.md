@@ -3,9 +3,19 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where `.<version>` is optional (e.g. if signficant changes made on same day)
 
-## [Unreleased]
+## [2026-01-11.1]
+
+### Removed
+- iTerm2 configuration files and directory (`config/iterm2/`)
+- iTerm2 installation section from `install.sh`
+- iTerm2 references from `README.md`, `AGENTS.md`
+
+### Changed
+- Updated AGENTS.md to clarify that past changelog entries should never be edited
+
+## [2026-01-11]
 
 ### Added
 - Local configuration system with `.example` template files
@@ -16,9 +26,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Install script automatically creates `.local` files from templates during setup
 - `.zshrc` now sources `.zshrc.local` from dotfiles repo directory (location-agnostic)
 - Comprehensive `.gitignore` rules for local configuration files
+- `CHANGELOG.md` stores the latest change & version (date)
+- `AGENTS.md` documentation for AI agents and developers
+  - PII protection guidelines
+  - Local configuration system documentation
+  - Contribution workflow
+  - Testing procedures
+  - Common gotchas and platform differences
 
 ### Changed
-- Replaced all hardcoded `/Users/jb` paths with `$HOME` environment variable
+- Replaced all hardcoded `/Users/<user>` paths with `$HOME` environment variable
   - `zsh/.zshrc`: oh-my-zsh, nix, conda, deno, bun, claude paths
   - `zsh/.zprofile`: development paths, Google Cloud SDK paths
   - `config/iterm2/com.googlecode.iterm2.plist`: working directory
