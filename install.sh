@@ -33,15 +33,6 @@ else
     echo "  → git/.gitconfig.local already exists, skipping"
 fi
 
-if [ ! -f "$DOTFILES_DIR/config/gh/hosts.yml" ]; then
-    echo "Creating config/gh/hosts.yml from example"
-    cp "$DOTFILES_DIR/config/gh/hosts.yml.example" "$DOTFILES_DIR/config/gh/hosts.yml"
-    echo "  → Run 'gh auth login' to set up GitHub CLI"
-    echo "  → Or manually edit $DOTFILES_DIR/config/gh/hosts.yml with your GitHub username"
-else
-    echo "  → config/gh/hosts.yml already exists, skipping"
-fi
-
 # Function to backup and symlink (for config files)
 backup_and_link() {
     local source="$1"
@@ -161,7 +152,7 @@ append_include_if_needed "$DOTFILES_DIR/ssh/defaults" "$HOME/.ssh/config" "Inclu
 # Install GitHub CLI config
 echo -e "\n=== Installing GitHub CLI configuration ==="
 backup_and_link "$DOTFILES_DIR/config/gh/config.yml" "$HOME/.config/gh/config.yml"
-backup_and_link "$DOTFILES_DIR/config/gh/hosts.yml" "$HOME/.config/gh/hosts.yml"
+echo "  → Run 'gh auth login' to set up GitHub CLI authentication"
 
 # Install uv config
 echo -e "\n=== Installing uv configuration ==="

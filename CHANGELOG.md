@@ -12,6 +12,12 @@ and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where
   - The `.d` suffix conventionally means "directory of config snippets"
   - New name clearly indicates it's a single file with default SSH settings
 
+### Removed
+- Removed `config/gh/hosts.yml.example` from repository
+  - GitHub CLI's `gh auth login` automatically creates and manages `hosts.yml`
+  - No need to track a template file when the tool handles it
+  - `install.sh` no longer attempts to create or symlink this file
+
 ### Fixed
 - SSH permissions now enforced during installation
   - `install.sh` now sets `~/.ssh` to 700 (drwx------)
