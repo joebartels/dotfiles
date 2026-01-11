@@ -25,6 +25,17 @@ This repository contains configuration files for:
 - **uv**: Python package manager configuration
   - `config/uv/uv-receipt.json` - uv installation receipt
 
+## Philosophy
+
+This dotfiles repository is designed to be **minimal and universally safe**:
+
+- **Shell configs** contain only universal aliases and functions that work in any environment
+- **No dependencies** on specific tools (oh-my-zsh, themes, etc.)
+- **Non-destructive** installation that preserves your existing configurations
+- **Source-based approach** for shell configs means they work alongside system defaults
+
+If you have environment-specific configurations (like tool paths, framework initializations, or custom themes), keep those in your local shell config files. This repository provides universal utilities that enhance any environment.
+
 ## Installation
 
 ### Quick Install
@@ -38,9 +49,10 @@ cd ~/.dotfiles
 ```
 
 The script will:
-1. Backup your existing dotfiles to `~/.dotfiles_backup_TIMESTAMP`
+1. Backup any existing configuration files that would be replaced
 2. Create local configuration files from templates (`.zshrc.local`, `.gitconfig.local`)
-3. Create symlinks from your home directory to the dotfiles in this repo
+3. **For shell configs** (`.zshrc`, `.zprofile`, `.zshenv`): Append source lines to your existing files (or create them if they don't exist)
+4. **For other configs** (git, ssh, etc.): Create symlinks from your home directory to this repo
 
 ### Required: Configure Personal Information
 
@@ -63,10 +75,10 @@ After installation, you **must** edit these files with your personal information
 If you prefer to install specific configurations manually:
 
 ```bash
-# Zsh
-ln -s ~/.dotfiles/zsh/.zshrc ~/.zshrc
-ln -s ~/.dotfiles/zsh/.zprofile ~/.zprofile
-ln -s ~/.dotfiles/zsh/.zshenv ~/.zshenv
+# Zsh - append source lines to your existing files
+echo '[ -f "$HOME/.dotfiles/zsh/.zshrc" ] && source "$HOME/.dotfiles/zsh/.zshrc"' >> ~/.zshrc
+echo '[ -f "$HOME/.dotfiles/zsh/.zprofile" ] && source "$HOME/.dotfiles/zsh/.zprofile"' >> ~/.zprofile
+echo '[ -f "$HOME/.dotfiles/zsh/.zshenv" ] && source "$HOME/.dotfiles/zsh/.zshenv"' >> ~/.zshenv
 
 # Git
 ln -s ~/.dotfiles/git/.gitconfig ~/.gitconfig
@@ -92,7 +104,7 @@ cd ~/.dotfiles
 git pull origin main
 ```
 
-Since the files are symlinked, changes will take effect immediately.
+Since shell configs are sourced (not symlinked), you'll need to restart your terminal or run `source ~/.zshrc` for changes to take effect. Other configs use symlinks and update immediately.
 
 ## Customization
 

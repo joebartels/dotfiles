@@ -39,7 +39,7 @@ if [ ! -f "$DOTFILES_DIR/config/gh/hosts.yml" ]; then
     echo "  → Or copy config/gh/hosts.yml.example to config/gh/hosts.yml and edit"
 fi
 
-# Function to backup and symlink
+# Function to backup and symlink (for config files)
 backup_and_link() {
     local source="$1"
     local target="$2"
@@ -63,11 +63,34 @@ backup_and_link() {
     ln -s "$source" "$target"
 }
 
+# Function to append source line if not already present (for shell configs)
+append_source_if_needed() {
+    local source_file="$1"
+    local target_file="$2"
+    local source_line="$3"
+
+    # Create target file if it doesn't exist
+    if [ ! -f "$target_file" ]; then
+        echo "Creating $target_file"
+        touch "$target_file"
+    fi
+
+    # Check if source line already exists
+    if grep -Fq "$source_line" "$target_file"; then
+        echo "  → $target_file already sources dotfiles, skipping"
+    else
+        echo "Adding source line to $target_file"
+        echo "" >> "$target_file"
+        echo "# Source dotfiles configuration" >> "$target_file"
+        echo "$source_line" >> "$target_file"
+    fi
+}
+
 # Install zsh configs
 echo -e "\n=== Installing zsh configuration ==="
-backup_and_link "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
-backup_and_link "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile"
-backup_and_link "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv"
+append_source_if_needed "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc" "[ -f \"$DOTFILES_DIR/zsh/.zshrc\" ] && source \"$DOTFILES_DIR/zsh/.zshrc\""
+append_source_if_needed "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile" "[ -f \"$DOTFILES_DIR/zsh/.zprofile\" ] && source \"$DOTFILES_DIR/zsh/.zprofile\""
+append_source_if_needed "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv" "[ -f \"$DOTFILES_DIR/zsh/.zshenv\" ] && source \"$DOTFILES_DIR/zsh/.zshenv\""
 
 # Install git configs
 echo -e "\n=== Installing git configuration ==="

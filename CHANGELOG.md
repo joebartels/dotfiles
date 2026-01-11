@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where `.<version>` is optional (e.g. if signficant changes made on same day)
 
+## [2026-01-11.2]
+
+### Changed
+- **BREAKING**: Completely refactored zsh configuration files to be minimal and universal
+  - `zsh/.zshrc`: Now contains only cross-platform aliases, docker utilities, and `pathn()` function
+  - `zsh/.zprofile`: Now contains only the `pathn()` function
+  - `zsh/.zshenv`: Now intentionally minimal with just comments
+- Changed installation approach for shell configs from symlinks to source-based
+  - `install.sh` now appends source lines to existing shell config files instead of replacing them
+  - Preserves existing configurations and system defaults
+  - Safe to use in remote/cloud environments without breaking system configs
+- Updated README.md with new "Philosophy" section explaining minimal, universal design
+- Updated README.md installation instructions to reflect source-based approach
+
+### Removed
+- All environment-specific configurations from committed files:
+  - oh-my-zsh and Powerlevel10k setup
+  - Nix, Conda, Deno, Bun initialization
+  - Personal tool paths and development directories
+  - NVM, Google Cloud SDK setup
+  - Cargo/Rust environment
+  - Python version paths
+
 ## [2026-01-11.1]
 
 ### Removed
