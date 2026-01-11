@@ -34,9 +34,12 @@ else
 fi
 
 if [ ! -f "$DOTFILES_DIR/config/gh/hosts.yml" ]; then
-    echo "GitHub CLI config not found"
-    echo "  → Run 'gh auth login' after installation to set up GitHub CLI"
-    echo "  → Or copy config/gh/hosts.yml.example to config/gh/hosts.yml and edit"
+    echo "Creating config/gh/hosts.yml from example"
+    cp "$DOTFILES_DIR/config/gh/hosts.yml.example" "$DOTFILES_DIR/config/gh/hosts.yml"
+    echo "  → Run 'gh auth login' to set up GitHub CLI"
+    echo "  → Or manually edit $DOTFILES_DIR/config/gh/hosts.yml with your GitHub username"
+else
+    echo "  → config/gh/hosts.yml already exists, skipping"
 fi
 
 # Function to backup and symlink (for config files)
