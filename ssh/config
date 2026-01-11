@@ -1,5 +1,5 @@
 # Main SSH Configuration
-# This file is managed by dotfiles - use ssh/config.d for your actual configurations
+# This file is managed by dotfiles - use ssh/defaults for your actual configurations
 
 # Include dotfiles SSH configuration
-Include ~/.dotfiles/ssh/config.d
+Include ~/.dotfiles/ssh/defaults

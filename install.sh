@@ -148,7 +148,7 @@ backup_and_link "$DOTFILES_DIR/config/git/ignore" "$HOME/.config/git/ignore"
 
 # Install SSH config
 echo -e "\n=== Installing SSH configuration ==="
-append_include_if_needed "$DOTFILES_DIR/ssh/config.d" "$HOME/.ssh/config" "Include $DOTFILES_DIR/ssh/config.d"
+append_include_if_needed "$DOTFILES_DIR/ssh/defaults" "$HOME/.ssh/config" "Include $DOTFILES_DIR/ssh/defaults"
 
 # Install GitHub CLI config
 echo -e "\n=== Installing GitHub CLI configuration ==="

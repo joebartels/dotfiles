@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where `.<version>` is optional (e.g. if signficant changes made on same day)
 
+## [2026-01-11.6]
+
+### Changed
+- Renamed `ssh/config.d` to `ssh/defaults` for clarity
+  - The `.d` suffix conventionally means "directory of config snippets"
+  - New name clearly indicates it's a single file with default SSH settings
+
 ## [2026-01-11.5]
 
 ### Changed
