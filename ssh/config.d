@@ -4,6 +4,8 @@
 # Default settings for all hosts
 Host *
   AddKeysToAgent yes
+  # UseKeychain is macOS-specific, will be ignored with warning on other systems
+  IgnoreUnknown UseKeychain
   UseKeychain yes
 
 # GitHub specific configuration

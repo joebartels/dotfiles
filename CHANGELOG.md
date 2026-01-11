@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where `.<version>` is optional (e.g. if signficant changes made on same day)
 
+## [2026-01-11.5]
+
+### Changed
+- **BREAKING**: Git configuration now uses append-include pattern instead of symlink replacement
+  - `install.sh` now appends `[include]` directive to existing `~/.gitconfig` instead of replacing it
+  - Prevents data loss of existing git configurations on remote systems
+  - Preserves user's existing git settings while adding dotfiles configurations
+- Improved backup directory structure to preserve full paths
+  - Backups now maintain original directory structure (e.g., `$BACKUP_DIR/Users/user/.config/gh/config.yml`)
+  - Makes restoration easier by preserving context of where files came from
+
+### Fixed
+- SSH config now handles macOS-specific `UseKeychain` directive gracefully on Linux
+  - Added `IgnoreUnknown UseKeychain` directive to prevent warnings/errors on non-macOS systems
+  - SSH will silently ignore the option on unsupported platforms
+- GitHub CLI hosts.yml now created from example template if missing
+  - `install.sh` copies `hosts.yml.example` to `hosts.yml` if it doesn't exist
+  - Prevents symlink creation failures when hosts.yml is missing
+
 ## [2026-01-11.4]
 
 ### Changed

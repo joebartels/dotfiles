@@ -53,7 +53,9 @@ backup_and_link() {
     # Backup existing file/directory if it exists and is not a symlink
     if [ -e "$target" ] && [ ! -L "$target" ]; then
         echo "Backing up existing $target"
-        mv "$target" "$BACKUP_DIR/"
+        backup_path="$BACKUP_DIR$(dirname "$target")"
+        mkdir -p "$backup_path"
+        mv "$target" "$backup_path/"
     fi
 
     # Remove existing symlink if present
@@ -123,7 +125,25 @@ append_source_if_needed "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv" "[ -f \"$DOT
 
 # Install git configs
 echo -e "\n=== Installing git configuration ==="
-backup_and_link "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
+
+# For .gitconfig, we append an include directive rather than replacing the file
+# This preserves any existing git configuration the user may have
+if [ ! -f "$HOME/.gitconfig" ]; then
+    echo "Creating $HOME/.gitconfig"
+    touch "$HOME/.gitconfig"
+fi
+
+# Check if our dotfiles are already included
+if grep -Fq "[include]" "$HOME/.gitconfig" && grep -Fq "path = $DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"; then
+    echo "  → $HOME/.gitconfig already includes dotfiles, skipping"
+else
+    echo "Adding dotfiles include to $HOME/.gitconfig"
+    echo "" >> "$HOME/.gitconfig"
+    echo "# Include dotfiles git configuration" >> "$HOME/.gitconfig"
+    echo "[include]" >> "$HOME/.gitconfig"
+    echo "	path = $DOTFILES_DIR/git/.gitconfig" >> "$HOME/.gitconfig"
+fi
+
 backup_and_link "$DOTFILES_DIR/config/git/ignore" "$HOME/.config/git/ignore"
 
 # Install SSH config
