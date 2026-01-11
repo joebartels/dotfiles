@@ -1,0 +1,9 @@
+# GitHub CLI Hosts Configuration
+# This file will be created automatically when you run: gh auth login
+# Or you can copy this file to hosts.yml and fill in your username
+
+github.com:
+    git_protocol: ssh
+    users:
+        YOUR_GITHUB_USERNAME:
+    user: YOUR_GITHUB_USERNAME

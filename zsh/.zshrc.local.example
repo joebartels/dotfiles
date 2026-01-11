@@ -1,0 +1,16 @@
+# Local ZSH Configuration (Machine-Specific)
+# Copy this file to .zshrc.local and customize for your machine
+#
+# This file is sourced by .zshrc and should contain:
+# - Machine-specific environment variables
+# - Custom aliases for this machine only
+# - Any other local overrides
+
+# Example: Custom environment variables
+# export MY_PROJECT_PATH="$HOME/projects"
+
+# Example: Machine-specific aliases
+# alias work="cd $HOME/work"
+
+# Example: API keys or tokens (be careful not to commit!)
+# export SOME_API_KEY="your-key-here"

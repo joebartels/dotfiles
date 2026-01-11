@@ -1,0 +1,10 @@
+Match all
+  Include ~/.ssh/codespaces
+
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+
+Host github.com
+  IdentityFile ~/.ssh/github_rsa
+  IdentitiesOnly yes

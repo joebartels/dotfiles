@@ -1,0 +1,6 @@
+# Git User Configuration
+# Copy this file to .gitconfig.local and fill in your details
+
+[user]
+	name = Your Name
+	email = your.email@example.com

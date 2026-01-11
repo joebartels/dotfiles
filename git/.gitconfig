@@ -1,0 +1,21 @@
+# Local user configuration (not committed to git)
+# Copy git/.gitconfig.local.example to git/.gitconfig.local and fill in your details
+[include]
+	path = .gitconfig.local
+
+[page]
+	branch = false
+[pager]
+	branch = false
+
+[alias]
+	aa = add --all
+	s = status
+	co = checkout
+	b = branch
+	c = commit
+	l = log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"
+	pullff = pull --ff-only
+	pushfwl = push --force-with-lease
+[push]
+	default = current
