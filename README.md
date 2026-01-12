@@ -20,7 +20,6 @@ This repository contains configuration files for:
 
 - **GitHub CLI**: GitHub command-line tool settings
   - `config/gh/config.yml` - GitHub CLI preferences
-  - `config/gh/hosts.yml` - GitHub hosts configuration
 
 - **uv**: Python package manager configuration
   - `config/uv/uv-receipt.json` - uv installation receipt
@@ -68,7 +67,7 @@ After installation, you **must** edit these files with your personal information
        email = your.email@example.com
    ```
 
-2. **GitHub CLI** (optional): Either run `gh auth login` or copy and edit `config/gh/hosts.yml.example`
+2. **GitHub CLI**: run `gh auth login`
 
 3. **Machine-specific settings** (optional): Edit `~/.dotfiles/zsh/.zshrc.local` for custom aliases or environment variables
 
@@ -91,7 +90,6 @@ ln -s ~/.dotfiles/config/git/ignore ~/.config/git/ignore
 
 # GitHub CLI
 ln -s ~/.dotfiles/config/gh/config.yml ~/.config/gh/config.yml
-ln -s ~/.dotfiles/config/gh/hosts.yml ~/.config/gh/hosts.yml
 
 # uv
 ln -s ~/.dotfiles/config/uv/uv-receipt.json ~/.config/uv/uv-receipt.json
@@ -123,7 +121,6 @@ This repository uses local configuration files for sensitive/machine-specific in
 
 - **`zsh/.zshrc.local`**: Machine-specific shell configuration (gitignored)
 - **`git/.gitconfig.local`**: Personal git user info (gitignored)
-- **`config/gh/hosts.yml`**: GitHub CLI authentication (gitignored)
 
 These files are automatically created from `.example` templates during installation. They remain in the dotfiles directory but are excluded from git commits.
 
@@ -133,7 +130,6 @@ The following patterns are gitignored to protect sensitive information:
 - All `.local` configuration files
 - SSH private keys (`*_rsa`, `*_ed25519`, etc.)
 - Environment files (`.env`, `.env.local`)
-- GitHub CLI authentication (`config/gh/hosts.yml`)
 
 Never commit API keys, tokens, or passwords to this repository.
 

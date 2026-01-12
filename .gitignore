@@ -16,7 +16,6 @@
 # Local configuration files (machine-specific, not committed)
 zsh/.zshrc.local
 git/.gitconfig.local
-config/gh/hosts.yml
 
 # Backup directories created by install script
 .dotfiles_backup_*/

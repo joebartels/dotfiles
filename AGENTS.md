@@ -54,7 +54,6 @@ This repository uses a template-based system for handling personal data:
 |------|---------|--------------|
 | `zsh/.zshrc.local` | Machine-specific shell config | Sourced by `.zshrc` using `${${(%):-%x}:A:h}/.zshrc.local` |
 | `git/.gitconfig.local` | Git user name/email | Included by `.gitconfig` using `[include] path = .gitconfig.local` |
-| `config/gh/hosts.yml` | GitHub CLI authentication | Managed by `gh auth login` command |
 
 ### Adding a New Local Configuration
 
@@ -220,8 +219,6 @@ dotfiles/
 ├── config/
 │   ├── gh/
 │   │   ├── config.yml           # GitHub CLI preferences
-│   │   ├── hosts.yml.example    # Template for authentication
-│   │   └── hosts.yml            # gitignored - actual auth info
 │   ├── git/
 │   │   └── ignore               # Global gitignore patterns
 │   └── uv/
