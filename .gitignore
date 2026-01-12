@@ -2,6 +2,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+**/.DS_Store
 
 # Secrets and sensitive files
 .env
@@ -16,6 +17,7 @@
 # Local configuration files (machine-specific, not committed)
 zsh/.zshrc.local
 git/.gitconfig.local
+.claude/settings.local.json
 
 # Backup directories created by install script
 .dotfiles_backup_*/
