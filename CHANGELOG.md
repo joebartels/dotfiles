@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where `.<version>` is optional (e.g. if signficant changes made on same day)
 
+## [2026-01-11.9]
+
+### Changed
+- `backup_and_link` now logs where existing symlinks point before removing them
+  - Helps preserve knowledge of hand-managed symlinks (e.g., to iCloud/Dropbox configs)
+  - Output: "Removing existing symlink /path/to/file -> /original/target"
+
 ## [2026-01-11.8]
 
 ### Fixed

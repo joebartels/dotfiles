@@ -49,8 +49,11 @@ backup_and_link() {
         mv "$target" "$backup_path/"
     fi
 
-    # Remove existing symlink if present
+    # Remove existing symlink if present (log where it pointed)
     if [ -L "$target" ]; then
+        local link_target
+        link_target="$(readlink "$target")"
+        echo "Removing existing symlink $target -> $link_target"
         rm "$target"
     fi
 
