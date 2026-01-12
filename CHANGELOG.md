@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where `.<version>` is optional (e.g. if signficant changes made on same day)
 
+## [2026-01-11.8]
+
+### Fixed
+- Fixed git include path to support dotfiles directories with spaces
+  - Git config path now quoted: `path = "$DOTFILES_DIR/git/.gitconfig"`
+  - Previously would break if dotfiles were in `/Users/name/my dotfiles/`
+- Added comment documenting SSH Include limitation with spaces in paths
+
 ## [2026-01-11.7]
 
 ### Fixed

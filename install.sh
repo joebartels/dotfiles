@@ -139,13 +139,14 @@ else
     echo "" >> "$HOME/.gitconfig"
     echo "# Include dotfiles git configuration" >> "$HOME/.gitconfig"
     echo "[include]" >> "$HOME/.gitconfig"
-    echo "	path = $DOTFILES_DIR/git/.gitconfig" >> "$HOME/.gitconfig"
+    echo "	path = \"$DOTFILES_DIR/git/.gitconfig\"" >> "$HOME/.gitconfig"
 fi
 
 backup_and_link "$DOTFILES_DIR/config/git/ignore" "$HOME/.config/git/ignore"
 
 # Install SSH config
 echo -e "\n=== Installing SSH configuration ==="
+# Note: SSH Include directive does not support quoted paths, so dotfiles directory must not contain spaces
 append_include_if_needed "$DOTFILES_DIR/ssh/defaults" "$HOME/.ssh/config" "Include $DOTFILES_DIR/ssh/defaults"
 
 # Install GitHub CLI config
