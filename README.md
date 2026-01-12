@@ -12,7 +12,7 @@ Minimal, safe dotfiles meant to layer on top of existing configs.
 ## Install
 
 ```bash
-git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
+git clone https://github.com/joebartels/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh
 ```
