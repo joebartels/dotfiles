@@ -11,8 +11,3 @@ Host *
   # Keep connections alive (helpful for long-running remote sessions)
   ServerAliveInterval 60
   ServerAliveCountMax 3
-
-  # Speed up repeated connections with connection multiplexing
-  ControlMaster auto
-  ControlPath ~/.ssh/sockets/%r@%h:%p
-  ControlPersist 600

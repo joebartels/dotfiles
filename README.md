@@ -6,7 +6,7 @@ Minimal, safe dotfiles meant to layer on top of existing configs.
 
 - **Zsh**: `.zshrc` and `.zshenv` sourced from this repo
 - **Git**: `.gitconfig` include + global ignore
-- **SSH**: `ssh/defaults` included with universal connection settings (keep-alive, multiplexing)
+- **SSH**: `ssh/defaults` included with universal connection settings (keep-alive)
 - **GitHub CLI**: `config/gh/config.yml`
 
 ## Install
@@ -40,7 +40,7 @@ echo '[ -f "$HOME/.dotfiles/zsh/.zshenv" ] && source "$HOME/.dotfiles/zsh/.zshen
 echo "Include $HOME/.dotfiles/ssh/defaults" >> ~/.ssh/config
 
 # Git
-ln -s ~/.dotfiles/git/.gitconfig ~/.gitconfig
+git config --global --add include.path "$HOME/.dotfiles/git/.gitconfig"
 ln -s ~/.dotfiles/config/git/ignore ~/.config/git/ignore
 
 # GitHub CLI
@@ -58,8 +58,4 @@ Restart your terminal or run `source ~/.zshrc` after updates.
 
 ## Uninstall
 
-```bash
-ls -d ~/.dotfiles_backup_*
-rm ~/.zshrc ~/.zshenv ~/.gitconfig
-cp ~/.dotfiles_backup_TIMESTAMP/* ~/
-```
+Remove the source/include lines you added in `~/.zshrc`, `~/.zshenv`, and `~/.gitconfig`, then remove any symlinks created by the script (e.g., `~/.config/git/ignore`, `~/.config/gh/config.yml`). If you have a backup directory (`~/.dotfiles_backup_*`), restore any files you want from there.
