@@ -154,10 +154,6 @@ echo -e "\n=== Installing GitHub CLI configuration ==="
 backup_and_link "$DOTFILES_DIR/config/gh/config.yml" "$HOME/.config/gh/config.yml"
 echo "  → Run 'gh auth login' to set up GitHub CLI authentication"
 
-# Install uv config
-echo -e "\n=== Installing uv configuration ==="
-backup_and_link "$DOTFILES_DIR/config/uv/uv-receipt.json" "$HOME/.config/uv/uv-receipt.json"
-
 echo -e "\n=== Installation complete! ==="
 echo "Backups are stored in: $BACKUP_DIR"
 echo ""

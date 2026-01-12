@@ -17,6 +17,9 @@ and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where
   - GitHub CLI's `gh auth login` automatically creates and manages `hosts.yml`
   - No need to track a template file when the tool handles it
   - `install.sh` no longer attempts to create or symlink this file
+- Removed `config/uv/` directory and uv configuration
+  - Tool not regularly used, no need to manage its config in dotfiles
+  - Users can configure uv locally if needed
 
 ### Fixed
 - SSH permissions now enforced during installation
