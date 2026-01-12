@@ -1,13 +1,18 @@
 # Universal SSH Configuration from dotfiles
 # This file is included by your main ~/.ssh/config
+#
+# Contains only truly universal defaults that help across all environments.
+# Host-specific config (GitHub keys, etc.) belongs in local ~/.ssh/config.
 
-# Default settings for all hosts
 Host *
-  IgnoreUnknown AddKeysToAgent,UseKeychain
-  AddKeysToAgent yes  
-  UseKeychain yes
+  # Ignore unknown directives (for cross-platform compatibility)
+  IgnoreUnknown UseKeychain,AddKeysToAgent
 
-# GitHub specific configuration
-Host github.com
-  IdentityFile ~/.ssh/github_rsa
-  IdentitiesOnly yes
+  # Keep connections alive (helpful for long-running remote sessions)
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+
+  # Speed up repeated connections with connection multiplexing
+  ControlMaster auto
+  ControlPath ~/.ssh/sockets/%r@%h:%p
+  ControlPersist 600

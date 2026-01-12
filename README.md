@@ -6,7 +6,7 @@ Minimal, safe dotfiles meant to layer on top of existing configs.
 
 - **Zsh**: `.zshrc` and `.zshenv` sourced from this repo
 - **Git**: `.gitconfig` include + global ignore
-- **SSH**: `ssh/defaults` included as fallback defaults
+- **SSH**: `ssh/defaults` included with universal connection settings (keep-alive, multiplexing)
 - **GitHub CLI**: `config/gh/config.yml`
 
 ## Install

@@ -228,8 +228,7 @@ dotfiles/
 │   ├── .gitconfig.local.example # Template for user info
 │   └── .gitconfig.local         # gitignored - name and email
 ├── ssh/
-│   ├── config                   # Minimal pointer (just includes config.d)
-│   └── config.d                 # Actual SSH client configuration
+│   └── defaults                 # Universal SSH settings (keep-alive, multiplexing)
 └── zsh/
     ├── .zshrc                   # Main zsh config (sources .zshrc.local)
     ├── .zshrc.local.example     # Template for machine-specific config
