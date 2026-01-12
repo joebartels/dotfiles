@@ -132,7 +132,7 @@ if [ ! -f "$HOME/.gitconfig" ]; then
 fi
 
 # Check if our dotfiles are already included
-if grep -Fq "[include]" "$HOME/.gitconfig" && grep -Fq "path = $DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"; then
+if git config -f "$HOME/.gitconfig" --get-regexp 'include\.path' | grep -q "$DOTFILES_DIR/git/.gitconfig"; then
     echo "  → $HOME/.gitconfig already includes dotfiles, skipping"
 else
     echo "Adding dotfiles include to $HOME/.gitconfig"

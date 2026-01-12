@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where `.<version>` is optional (e.g. if signficant changes made on same day)
 
+## [2026-01-11.7]
+
+### Fixed
+- Fixed brittle git include detection logic in `install.sh`
+  - Now uses `git config --get-regexp` to parse gitconfig instead of grep
+  - Handles whitespace variations (`path=`, `path =`, quoted paths, etc.)
+  - Only detects active includes (ignores commented-out lines)
+  - Prevents duplicate `[include]` blocks over time
+
 ## [2026-01-11.6]
 
 ### Changed
