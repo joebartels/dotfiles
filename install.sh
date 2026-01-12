@@ -17,21 +17,28 @@ echo "Backups will be stored in $BACKUP_DIR"
 # Copy local configuration examples if they don't exist
 echo -e "\n=== Setting up local configuration files ==="
 
-if [ ! -f "$DOTFILES_DIR/zsh/.zshrc.local" ]; then
-    echo "Creating zsh/.zshrc.local from example"
-    cp "$DOTFILES_DIR/zsh/.zshrc.local.example" "$DOTFILES_DIR/zsh/.zshrc.local"
-    echo "  → Edit $DOTFILES_DIR/zsh/.zshrc.local to add machine-specific configuration"
-else
-    echo "  → zsh/.zshrc.local already exists, skipping"
-fi
+create_local_from_example() {
+    local rel_target="$1"   # e.g. "zsh/.zshrc.local"
+    local note_line="$2"    # the extra "  → ..." line when created
+    local target="$DOTFILES_DIR/$rel_target"
+    local example="$target.example"
 
-if [ ! -f "$DOTFILES_DIR/git/.gitconfig.local" ]; then
-    echo "Creating git/.gitconfig.local from example"
-    cp "$DOTFILES_DIR/git/.gitconfig.local.example" "$DOTFILES_DIR/git/.gitconfig.local"
-    echo "  → IMPORTANT: Edit $DOTFILES_DIR/git/.gitconfig.local with your name and email"
-else
-    echo "  → git/.gitconfig.local already exists, skipping"
-fi
+    if [ ! -f "$target" ]; then
+        echo "Creating $rel_target from example"
+        cp "$example" "$target"
+        echo "$note_line"
+    else
+        echo "  → $rel_target already exists, skipping"
+    fi
+}
+
+create_local_from_example \
+    "zsh/.zshrc.local" \
+    "  → Edit $DOTFILES_DIR/zsh/.zshrc.local to add machine-specific configuration"
+
+create_local_from_example \
+    "git/.gitconfig.local" \
+    "  → IMPORTANT: Edit $DOTFILES_DIR/git/.gitconfig.local with your name and email"
 
 # Function to backup and symlink (for config files)
 backup_and_link() {

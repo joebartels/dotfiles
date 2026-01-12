@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where `.<version>` is optional (e.g. if signficant changes made on same day)
 
+## [2026-01-11.11]
+
+### Changed
+- Refactored local config template creation in `install.sh` to reduce duplication
+
 ## [2026-01-11.10]
 
 ### Changed
