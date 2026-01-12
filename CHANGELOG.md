@@ -20,6 +20,10 @@ and this project adheres to date based versioning (`YYYY-mm-DD.<version>`) where
 - Removed `config/uv/` directory and uv configuration
   - Tool not regularly used, no need to manage its config in dotfiles
   - Users can configure uv locally if needed
+- Removed `zsh/.zprofile` from repository
+  - Simplified to just `.zshrc` (interactive shells) and `.zshenv` (environment variables)
+  - `.zprofile` was redundant - contained duplicate `pathn()` function already in `.zshrc`
+  - Most users only need `.zshrc` for their shell customization
 
 ### Fixed
 - SSH permissions now enforced during installation

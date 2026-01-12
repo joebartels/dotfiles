@@ -119,7 +119,6 @@ append_include_if_needed() {
 # Install zsh configs
 echo -e "\n=== Installing zsh configuration ==="
 append_source_if_needed "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc" "[ -f \"$DOTFILES_DIR/zsh/.zshrc\" ] && source \"$DOTFILES_DIR/zsh/.zshrc\""
-append_source_if_needed "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile" "[ -f \"$DOTFILES_DIR/zsh/.zprofile\" ] && source \"$DOTFILES_DIR/zsh/.zprofile\""
 append_source_if_needed "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv" "[ -f \"$DOTFILES_DIR/zsh/.zshenv\" ] && source \"$DOTFILES_DIR/zsh/.zshenv\""
 
 # Install git configs
