@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/jb/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -112,34 +112,15 @@ alias docker-kill='docker ps -q | xargs -n 1 docker kill'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-if [ -e /Users/jb/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/jb/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/jb/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/jb/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/jb/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/jb/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-export DENO_INSTALL="/Users/jb/.deno"
+export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
 # bun completions
-[ -s "/Users/jb/.bun/_bun" ] && source "/Users/jb/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
-alias claude="/Users/jb/.claude/local/claude"
 
 . "$HOME/.local/bin/env"
