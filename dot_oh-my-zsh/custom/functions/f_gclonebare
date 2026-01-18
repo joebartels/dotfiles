@@ -1,0 +1,44 @@
+function f_gclonebare() {
+  local url=$1
+  local name=${2:-$(basename "$url" .git)}
+
+  if [[ -z "$url" ]]; then
+    echo "Usage: gclone-bare <repository-url> [directory-name]"
+    return 1
+  fi
+
+  echo "🚀 Setting up bare repository in '$name'..."
+
+  # 1. Create directory and enter it
+  mkdir -p "$name"
+  cd "$name" || return
+
+  # 2. Clone bare (hidden in .bare)
+  # We suppress output to keep it clean, but you can remove -q
+  git clone --bare -q "$url" .bare
+  echo "✅ Bare clone complete."
+
+  # 3. Create the magic .git file
+  echo "gitdir: ./.bare" > .git
+
+  # 4. Fix fetch config to allow fetching remote branches
+  # We run config inside the current dir, which now works because of the .git file
+  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+  # 5. Fetch to populate refs/remotes/origin/
+  git fetch origin -q
+  echo "✅ Remote refs fetched."
+
+  # 6. Determine the default branch (usually main or master)
+  # We try to get the symbolic ref from the bare repo's HEAD
+  local default_branch=$(git -C .bare symbolic-ref HEAD | sed 's|refs/heads/||')
+
+  # 7. Create the primary worktree
+  if git worktree add "$default_branch" 2>/dev/null; then
+    echo "✅ Setup complete! Worktree '$default_branch' created."
+    echo "📂 cd $name/$default_branch to get started."
+  else
+    echo "⚠️  Could not automatically create worktree for '$default_branch'."
+    echo "   You are in the project root. Try: git worktree add <branch-name>"
+  fi
+}

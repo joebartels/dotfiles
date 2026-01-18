@@ -31,6 +31,9 @@ if [[ -d "$HOME/.oh-my-zsh" ]]; then
   ZSH_THEME="powerlevel10k/powerlevel10k"
 
   source "$ZSH/oh-my-zsh.sh"
+
+  # autoload all functions inside fpath by their name
+  autoload -Uz $fpath[1]/*(.:t)
 fi
 
 # Cross-platform ls alias (works on both macOS and Linux)
