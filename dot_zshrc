@@ -36,6 +36,13 @@ if [[ -d "$HOME/.oh-my-zsh" ]]; then
   autoload -Uz $fpath[1]/*(.:t)
 fi
 
+# Autoload custom functions from oh-my-zsh/custom/functions
+custom_functions_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/functions"
+if [[ -d "$custom_functions_dir" ]]; then
+  autoload -Uz "$custom_functions_dir"/*(.N:t)
+fi
+unset custom_functions_dir
+
 # Cross-platform ls alias (works on both macOS and Linux)
 if [[ "$OSTYPE" == "darwin"* ]]; then
     alias ls='ls -laphG'  # macOS with color
