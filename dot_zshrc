@@ -45,6 +45,8 @@ fi
 
 alias docker-kill='docker ps -q | xargs -n 1 docker kill'
 
+# Clear any alias from plugins so function definition works
+unalias docker-reset 2>/dev/null || true
 docker-reset() {
   local ids
   ids="$(docker ps -q)"
