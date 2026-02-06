@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# 1. Get the name of the default branch from the remote (origin)
+# This pipes the remote info and strips it down to just the branch name
+DEFAULT_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+
+if [ -z "$DEFAULT_BRANCH" ]; then
+    echo "❌ Error: Could not detect default branch from 'origin'."
+    exit 1
+fi
+
+echo "🔄 Detected default branch: $DEFAULT_BRANCH"
+
+# 2. Fetch the latest from the server
+echo "📥 Fetching latest changes..."
+git fetch origin
+
+# 3. Perform the rebase against the remote-tracking branch
+echo "🚀 Rebasing current branch onto origin/$DEFAULT_BRANCH..."
+git rebase "origin/$DEFAULT_BRANCH"
+
+if [ $? -eq 0 ]; then
+    echo "✅ Successfully rebased!"
+else
+    echo "⚠️  Rebase paused due to conflicts. Resolve them and run 'git rebase --continue'."
+fi
