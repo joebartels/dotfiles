@@ -29,11 +29,15 @@ function f_gclonebare() {
   git fetch origin -q
   echo "✅ Remote refs fetched."
 
-  # 6. Determine the default branch (usually main or master)
+  # 6. Wire up default remote branch pointer
+  echo "Setting remote HEAD pointer"
+  git remote set-head origin -a
+
+  # 7. Determine the default branch (usually main or master)
   # We try to get the symbolic ref from the bare repo's HEAD
   local default_branch=$(git -C .bare symbolic-ref HEAD | sed 's|refs/heads/||')
 
-  # 7. Create the primary worktree
+  # 8. Create the primary worktree
   if git worktree add "$default_branch" 2>/dev/null; then
     echo "✅ Setup complete! Worktree '$default_branch' created."
     echo "📂 cd $name/$default_branch to get started."
