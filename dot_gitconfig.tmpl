@@ -1,0 +1,34 @@
+[user]
+	name = {{ .gh.fullName }}
+	email = {{ .gh.email }}
+	signingKey = {{ .gh.signingKey }}
+[page]
+	branch = false
+[pager]
+	branch = false
+	log = false
+[commit]
+	gpgsign = true
+[push]
+	default = current
+[alias]
+	aa = add --all
+	s = status
+	co = checkout
+	c = commit
+	b = branch
+	pullff = pull --ff-only
+	pushfwl = push --force-with-lease
+	l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[gpg]
+	program = /usr/local/bin/gpg
+[checkout]
+	defaultRemote = origin
+[core]
+	autocrlf = input
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
