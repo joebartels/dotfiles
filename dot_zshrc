@@ -86,6 +86,9 @@ function jh() {
   echo $JAVA_HOME
 }
 
+# 2026-03-21 - gnugpg may need this config.
+export GPG_TTY=$TTY
+
 # ==========================================================
 #  END OF FILE (managed by chezmoi)
 #
