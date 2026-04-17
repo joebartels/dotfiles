@@ -1,0 +1,30 @@
+f_gaddworktree() {
+  local new_branch="$1"
+  local base_branch="$2"
+
+  if [ -z "$new_branch" ]; then
+    echo "Usage: f_gaddworktree <new-branch> [base-branch]"
+    echo "Example: f_gaddworktree feature-x v2"
+    return 1
+  fi
+
+  # If no base branch is provided, use the latest from remote HEAD
+  if [ -z "$base_branch" ]; then
+    echo "No base branch provided. Fetching latest from origin..."
+    git fetch origin
+
+    # Determine the default branch on origin (e.g., origin/main)
+    base_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/@@')
+
+    if [ -z "$base_branch" ]; then
+      echo "Error: Could not determine default remote HEAD."
+      echo "Hint: You may need to run 'git remote set-head origin -a' once to set it up."
+      echo "Alternatively, specify the base branch explicitly."
+      return 1
+    fi
+    echo "Branching off $base_branch..."
+  fi
+
+  # Create the new branch and checkout into a directory of the same name
+  git worktree add -b "$new_branch" "./$new_branch" "$base_branch"
+}
