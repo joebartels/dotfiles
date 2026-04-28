@@ -2,47 +2,54 @@ function f_gclonebare() {
   local url=$1
   local name=${2:-$(basename "$url" .git)}
 
+  # 1. Basic check for empty URL
   if [[ -z "$url" ]]; then
     echo "Usage: gclone-bare <repository-url> [directory-name]"
     return 1
   fi
 
-  echo "🚀 Setting up bare repository in '$name'..."
-
-  # 1. Create directory and enter it
-  mkdir -p "$name"
-  cd "$name" || return
-
-  # 2. Clone bare (hidden in .bare)
-  # We suppress output to keep it clean, but you can remove -q
-  git clone --bare -q "$url" .bare
-  echo "✅ Bare clone complete."
-
-  # 3. Create the magic .git file
-  echo "gitdir: ./.bare" > .git
-
-  # 4. Fix fetch config to allow fetching remote branches
-  # We run config inside the current dir, which now works because of the .git file
-  git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-
-  # 5. Fetch to populate refs/remotes/origin/
-  git fetch origin -q
-  echo "✅ Remote refs fetched."
-
-  # 6. Wire up default remote branch pointer
-  echo "Setting remote HEAD pointer"
-  git remote set-head origin -a
-
-  # 7. Determine the default branch (usually main or master)
-  # We try to get the symbolic ref from the bare repo's HEAD
-  local default_branch=$(git -C .bare symbolic-ref HEAD | sed 's|refs/heads/||')
-
-  # 8. Create the primary worktree
-  if git worktree add "$default_branch" 2>/dev/null; then
-    echo "✅ Setup complete! Worktree '$default_branch' created."
-    echo "📂 cd $name/$default_branch to get started."
-  else
-    echo "⚠️  Could not automatically create worktree for '$default_branch'."
-    echo "   You are in the project root. Try: git worktree add <branch-name>"
+  # 2. THE GATEKEEPER: Check if the repo exists BEFORE doing anything else
+  # This doesn't create any files or folders.
+  echo "🔍 Verifying remote repository..."
+  if ! git ls-remote "$url" &>/dev/null; then
+    echo "❌ Error: Repository not found or URL is invalid: '$url'"
+    return 1
   fi
+
+  # 3. Prevent overwriting an existing local directory
+  if [[ -d "$name" ]]; then
+    echo "❌ Error: Directory '$name' already exists."
+    return 1
+  fi
+
+  # 4. THE SUBSHELL: Protects your CWD and contains the setup
+  (
+    # 'set -e' ensures the subshell exits immediately on any error
+    set -e 
+
+    echo "🚀 Setting up bare repository in '$name'..."
+    
+    # We only create the directory once we know the URL is valid
+    mkdir "$name"
+    cd "$name"
+
+    # Perform the clone. If this fails (e.g. network drop), 
+    # 'set -e' stops the script before any of the following lines run.
+    git clone --bare -q "$url" .bare
+    
+    echo "gitdir: ./.bare" > .git
+    git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    git fetch origin -q
+    git remote set-head origin -a
+
+    local default_branch=$(git -C .bare symbolic-ref HEAD | sed 's|refs/heads/||')
+
+    # Create worktree (wrapped in a check so the whole script doesn't fail if just this step fails)
+    if git worktree add "$default_branch" 2>/dev/null; then
+      echo "✅ Setup complete! Worktree '$default_branch' created."
+      echo "📂 Location: $name/$default_branch"
+    else
+      echo "⚠️  Bare clone complete, but could not create worktree for '$default_branch'."
+    fi
+  )
 }
