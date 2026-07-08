@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+plugin_base="$HOME/.config/tmux/plugins"
+
+install_or_update() {
+  local name="$1"
+  local repo="$2"
+  local dir="$plugin_base/$name"
+
+  if [ ! -d "$dir/.git" ]; then
+    mkdir -p "$plugin_base"
+    git clone "$repo" "$dir"
+  else
+    git -C "$dir" pull --ff-only
+  fi
+}
+
+install_or_update "tmux-prefix-highlight" "https://github.com/tmux-plugins/tmux-prefix-highlight"
