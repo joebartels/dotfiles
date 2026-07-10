@@ -35,7 +35,7 @@ function f_gclonebare() {
 
     # Perform the clone. If this fails (e.g. network drop), 
     # 'set -e' stops the script before any of the following lines run.
-    git clone --bare --ref-format=reftable -q "$url" .bare
+    git clone --bare -q "$url" .bare
     
     echo "gitdir: ./.bare" > .git
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
