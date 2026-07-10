@@ -77,8 +77,23 @@ alias drm='docker rm $(docker ps -a -q)'
 alias dfrm='docker rm -f $(docker ps -a -q)'
 
 function jh() {
-  export JAVA_HOME=$(/usr/libexec/java_home $*)
-  echo $JAVA_HOME
+  if [[ "$1" == "-v" && $# == 1 ]]; then
+    [[ -n "${JAVA_HOME:-}" ]] || jh >/dev/null || return
+    "$JAVA_HOME/bin/java" -version
+    return
+  fi
+
+  local -a args=("$@")
+
+  if (( $# == 0 )); then
+    args=(-v "${JAVA_HOME_DEFAULT_VERSION:-21}")
+  fi
+
+  local home
+  home=$(/usr/libexec/java_home "${args[@]}") || return
+
+  export JAVA_HOME="$home"
+  echo "$JAVA_HOME"
 }
 
 # 2026-03-21 - prints items in $PATH (removes duplicates via -u)
@@ -95,6 +110,15 @@ export GPG_TTY=$TTY
 # and you'll need to manually move them to .zshrc.local
 #
 [[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+#
+# Things that should run after .zshrc.local is loaded
+#
+
+# set default JAVA_HOME variable (defaults to 21, otherwise looks at JAVA_HOME_DEFAULT_VERSION
+jh >/dev/null
+
+
 
 # ==========================================================
 #  END OF FILE (managed by chezmoi)
