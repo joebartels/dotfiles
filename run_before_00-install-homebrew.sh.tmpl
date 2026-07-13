@@ -16,5 +16,15 @@ for brew_path in \
   fi
 done
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+installer="$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
+  printf '%s\n' 'Failed to download Homebrew installer.' >&2
+  exit 1
+}
+
+[[ -n "$installer" ]] || {
+  printf '%s\n' 'Failed to download Homebrew installer.' >&2
+  exit 1
+}
+
+/bin/bash -c "$installer"
 {{- end }}

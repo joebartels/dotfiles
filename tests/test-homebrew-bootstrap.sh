@@ -165,7 +165,10 @@ for script in "$darwin_script" "$linux_script"; do
   assert_contains "$script" '/usr/local/bin/brew'
   assert_contains "$script" '/home/linuxbrew/.linuxbrew/bin/brew'
   assert_contains "$script" '$HOME/.linuxbrew/bin/brew'
-  assert_contains "$script" '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+  assert_contains "$script" 'installer="$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+  assert_contains "$script" 'Failed to download Homebrew installer.'
+  assert_contains "$script" '/bin/bash -c "$installer"'
+  assert_not_contains "$script" '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
   assert_not_contains "$script" 'NONINTERACTIVE=1'
 done
 
@@ -214,6 +217,38 @@ HOMEBREW_BOOTSTRAP_INSTALLER_CALLED="$installer_marker" \
   PATH="$bootstrap_no_brew_bin" \
   "${BASH:-/bin/bash}" "$isolated_installer_script"
 [[ -e "$installer_marker" ]] || fail "installer did not run when no brew was available"
+
+cat >"$bootstrap_no_brew_bin/curl" <<'EOF'
+#!/bin/sh
+exit 22
+EOF
+chmod +x "$bootstrap_no_brew_bin/curl"
+
+curl_failure_output="$tmp_dir/curl-download-failure-output"
+expected_curl_failure_output="$tmp_dir/expected-curl-download-failure-output"
+printf '%s\n' 'Failed to download Homebrew installer.' >"$expected_curl_failure_output"
+if HOME="$bootstrap_no_brew_home" \
+  PATH="$bootstrap_no_brew_bin" \
+  "${BASH:-/bin/bash}" "$isolated_installer_script" >"$curl_failure_output" 2>&1; then
+  fail "bootstrap script succeeded after the Homebrew installer download failed"
+fi
+cmp -s "$expected_curl_failure_output" "$curl_failure_output" || \
+  fail "expected an exact Homebrew installer download failure diagnostic"
+
+cat >"$bootstrap_no_brew_bin/curl" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$bootstrap_no_brew_bin/curl"
+
+empty_curl_failure_output="$tmp_dir/empty-curl-download-failure-output"
+if HOME="$bootstrap_no_brew_home" \
+  PATH="$bootstrap_no_brew_bin" \
+  "${BASH:-/bin/bash}" "$isolated_installer_script" >"$empty_curl_failure_output" 2>&1; then
+  fail "bootstrap script succeeded after the Homebrew installer download returned an empty response"
+fi
+cmp -s "$expected_curl_failure_output" "$empty_curl_failure_output" || \
+  fail "expected an exact Homebrew installer empty-download failure diagnostic"
 
 assert_contains "$zshrc" '[[ -o interactive ]] || return'
 assert_contains "$zshrc" '/opt/homebrew/bin'
