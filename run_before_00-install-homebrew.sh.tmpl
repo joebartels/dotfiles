@@ -1,0 +1,20 @@
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") }}
+#!/bin/bash
+set -euo pipefail
+
+if command -v brew >/dev/null 2>&1; then
+  exit 0
+fi
+
+for brew_path in \
+  /opt/homebrew/bin/brew \
+  /usr/local/bin/brew \
+  /home/linuxbrew/.linuxbrew/bin/brew \
+  "$HOME/.linuxbrew/bin/brew"; do
+  if [[ -x "$brew_path" ]]; then
+    exit 0
+  fi
+done
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+{{- end }}

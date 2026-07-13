@@ -22,6 +22,28 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Make Homebrew available to interactive shells before Oh My Zsh loads plugins.
+if ! command -v brew >/dev/null 2>&1; then
+  for homebrew_bin in \
+    /opt/homebrew/bin \
+    /usr/local/bin \
+    /home/linuxbrew/.linuxbrew/bin \
+    "$HOME/.linuxbrew/bin"; do
+    if [[ -x "$homebrew_bin/brew" ]]; then
+      case ":$PATH:" in
+        *":$homebrew_bin:"*) ;;
+        *) export PATH="$homebrew_bin:$PATH" ;;
+      esac
+      break
+    fi
+  done
+fi
+unset homebrew_bin
+
+if command -v brew >/dev/null 2>&1; then
+  eval "$(brew shellenv)"
+fi
+
 # Only enable OMZ if installed
 if [[ -d "$HOME/.oh-my-zsh" ]]; then
   export ZSH="$HOME/.oh-my-zsh"
