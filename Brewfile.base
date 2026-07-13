@@ -1,0 +1,25 @@
+tap "bufbuild/buf"
+# Manage your dotfiles across multiple diverse machines, securely
+brew "chezmoi"
+# Interact with Google Gemini AI models from the command-line
+brew "gemini-cli"
+# GitHub command-line tool
+brew "gh"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
+# GNU Privacy Guard (OpenPGP)
+brew "gnupg"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
+# Fast, disk space efficient package manager
+brew "pnpm"
+# CLI proxy to minimize LLM token consumption
+brew "rtk"
+# Generate type safe Go from SQL
+brew "sqlc"
+# Terminal multiplexer
+brew "tmux"
+brew "go"
+go "golang.org/x/tools/cmd/goimports"
+go "connectrpc.com/connect/cmd/protoc-gen-connect-go"
+go "google.golang.org/protobuf/cmd/protoc-gen-go"

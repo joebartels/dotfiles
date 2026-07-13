@@ -1,0 +1,51 @@
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
+#!/bin/bash
+set -euo pipefail
+
+readonly source_dir="${CHEZMOI_SOURCE_DIR:?CHEZMOI_SOURCE_DIR is required}"
+readonly base_brewfile="$source_dir/Brewfile.base"
+
+# Brewfile checksum: Brewfile.base {{ include "Brewfile.base" | sha256sum }}
+{{- if eq .chezmoi.os "darwin" }}
+# Brewfile checksum: Brewfile.darwin {{ include "Brewfile.darwin" | sha256sum }}
+readonly os_brewfile="$source_dir/Brewfile.darwin"
+{{- else }}
+# Brewfile checksum: Brewfile.linux {{ include "Brewfile.linux" | sha256sum }}
+readonly os_brewfile="$source_dir/Brewfile.linux"
+{{- end }}
+{{- if eq .env "personal" }}
+# Brewfile checksum: Brewfile.personal {{ include "Brewfile.personal" | sha256sum }}
+readonly profile_brewfile="$source_dir/Brewfile.personal"
+{{- else if eq .env "work" }}
+# Brewfile checksum: Brewfile.work {{ include "Brewfile.work" | sha256sum }}
+readonly profile_brewfile="$source_dir/Brewfile.work"
+{{- else }}
+printf '%s\n' 'unsupported chezmoi profile (expected personal or work)' >&2
+exit 1
+{{- end }}
+
+if ! command -v brew >/dev/null 2>&1; then
+  for brew_path in \
+    /opt/homebrew/bin/brew \
+    /usr/local/bin/brew \
+    /home/linuxbrew/.linuxbrew/bin/brew \
+    "$HOME/.linuxbrew/bin/brew"; do
+    if [[ -x "$brew_path" ]]; then
+      PATH="${brew_path%/*}:$PATH"
+      export PATH
+      break
+    fi
+  done
+fi
+
+if ! command -v brew >/dev/null 2>&1; then
+  printf 'Homebrew was not found on PATH or in a supported default prefix.\n' >&2
+  exit 1
+fi
+
+eval "$(brew shellenv)"
+
+brew bundle install --no-upgrade --file="$base_brewfile"
+brew bundle install --no-upgrade --file="$os_brewfile"
+brew bundle install --no-upgrade --file="$profile_brewfile"
+{{- end }}

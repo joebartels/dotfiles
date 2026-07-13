@@ -1,0 +1,3 @@
+# Arduino command-line interface
+brew "arduino-cli"
+
