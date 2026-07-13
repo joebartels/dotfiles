@@ -9,6 +9,7 @@ readonly bundle_template="$source_dir/run_onchange_before_10-install-brew-bundle
 readonly legacy_bundle_template="$source_dir/run_onchange_before_install-packages.sh.tmpl"
 readonly chezmoiignore="$source_dir/.chezmoiignore"
 readonly zshrc="$source_dir/dot_zshrc"
+readonly readme="$source_dir/README.md"
 
 tmp_dir="$(mktemp -d)"
 trap 'rm -rf "$tmp_dir"' EXIT
@@ -88,6 +89,33 @@ assert_before() {
   [[ -n "$second_line" ]] || fail "missing expected line: $second"
   (( first_line < second_line )) || fail "expected $first to precede $second"
 }
+
+assert_readme_documents_bootstrap() {
+  [[ -f "$readme" ]] || fail "missing README.md"
+
+  assert_contains "$readme" '## Setup'
+  assert_contains "$readme" '## Homebrew Packages'
+  assert_contains "$readme" 'sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "$HOME/.local/bin"'
+  assert_contains "$readme" '`chezmoi init https://github.com/'
+  assert_contains "$readme" '`chezmoi apply`'
+  assert_contains "$readme" '`PATH`'
+  assert_contains "$readme" '/opt/homebrew/bin/brew'
+  assert_contains "$readme" '/usr/local/bin/brew'
+  assert_contains "$readme" '/home/linuxbrew/.linuxbrew/bin/brew'
+  assert_contains "$readme" '$HOME/.linuxbrew/bin/brew'
+  assert_contains "$readme" 'official interactive installer'
+  for brewfile in Brewfile.base Brewfile.darwin Brewfile.linux Brewfile.personal Brewfile.work; do
+    assert_contains "$readme" "\`$brewfile\`"
+  done
+  assert_contains "$readme" 'source-only declarations'
+  assert_contains "$readme" 'initial applicable `chezmoi apply`'
+  assert_contains "$readme" '`brew bundle install --no-upgrade`'
+  assert_contains "$readme" 'rendered input'
+  assert_contains "$readme" 'selected Brewfiles'
+  assert_contains "$readme" 'The profile must be `personal` or `work`.'
+}
+
+assert_readme_documents_bootstrap
 
 render_template() {
   local os=$1
