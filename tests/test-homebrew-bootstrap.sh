@@ -104,6 +104,16 @@ assert_readme_documents_bootstrap() {
   assert_contains "$readme" '/home/linuxbrew/.linuxbrew/bin/brew'
   assert_contains "$readme" '$HOME/.linuxbrew/bin/brew'
   assert_contains "$readme" 'official interactive installer'
+  assert_contains "$readme" 'machine-local'
+  assert_contains "$readme" 'Before the first apply'
+  assert_contains "$readme" '~/.config/chezmoi/chezmoi.toml'
+  assert_contains "$readme" '[data]'
+  assert_contains "$readme" 'env = "personal"'
+  assert_contains "$readme" 'env = "work"'
+  assert_before "$readme" '~/.config/chezmoi/chezmoi.toml' 'Apply: `chezmoi apply`'
+  assert_before "$readme" '[data]' 'Apply: `chezmoi apply`'
+  assert_before "$readme" 'env = "personal"' 'Apply: `chezmoi apply`'
+  assert_before "$readme" 'env = "work"' 'Apply: `chezmoi apply`'
   for brewfile in Brewfile.base Brewfile.darwin Brewfile.linux Brewfile.personal Brewfile.work; do
     assert_contains "$readme" "\`$brewfile\`"
   done

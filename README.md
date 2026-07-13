@@ -5,7 +5,13 @@
    - Use the supported official binary installer: `sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "$HOME/.local/bin"`
    - The installer directory, `$HOME/.local/bin`, must be on your `PATH`. A native package manager is also valid.
 2. Clone/init: `chezmoi init https://github.com/…/dotfiles.git` (or `chezmoi init .` from this repo).
-3. Apply: `chezmoi apply` (run with `-v` to see steps). On macOS or Linux, each applicable `chezmoi apply` checks `PATH` and `/opt/homebrew/bin/brew`, `/usr/local/bin/brew`, `/home/linuxbrew/.linuxbrew/bin/brew`, and `$HOME/.linuxbrew/bin/brew`. If none is detected, it invokes Homebrew's official interactive installer.
+3. Before the first apply, set the machine-local profile in `~/.config/chezmoi/chezmoi.toml` (create it if absent):
+   ```toml
+   [data]
+   env = "personal" # or "work"
+   ```
+   Use `env = "work"` on work machines. The profile selects the relevant Brewfile and must be `personal` or `work`.
+4. Apply: `chezmoi apply` (run with `-v` to see steps). On macOS or Linux, each applicable `chezmoi apply` checks `PATH` and `/opt/homebrew/bin/brew`, `/usr/local/bin/brew`, `/home/linuxbrew/.linuxbrew/bin/brew`, and `$HOME/.linuxbrew/bin/brew`. If none is detected, it invokes Homebrew's official interactive installer.
 
 ## Homebrew Packages
 
