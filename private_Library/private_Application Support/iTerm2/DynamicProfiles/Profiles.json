@@ -52,7 +52,7 @@
     "slogin",
     "telnet"
   ],
-  "Scrollback Lines" : 1000,
+  "Scrollback Lines" : 100000,
   "HotKey Window Reopens On Activation" : true,
   "Draw Powerline Glyphs" : true,
   "Status Bar Layout" : {
@@ -403,7 +403,7 @@
     "slogin",
     "telnet"
   ],
-  "Scrollback Lines" : 1000,
+  "Scrollback Lines" : 100000,
   "HotKey Window Reopens On Activation" : false,
   "Draw Powerline Glyphs" : true,
   "Flashing Bell" : false,
