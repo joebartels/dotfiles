@@ -8,7 +8,7 @@ Apply this chezmoi source state on macOS and Linux so Homebrew is installed when
 
 Homebrew bootstrap and package reconciliation have separate responsibilities:
 
-1. `run_before_00-install-homebrew.sh.tmpl` runs on every apply on macOS and Linux. It detects `brew` in `PATH` and at supported default prefixes before invoking Homebrew's official installer.
+1. `run_once_before_00-install-homebrew.sh.tmpl` runs once before apply on macOS and Linux. It detects `brew` in `PATH` and at supported default prefixes before invoking Homebrew's official installer.
 2. `run_onchange_before_10-install-brew-bundles.sh.tmpl` runs only when the selected Brewfiles or its own logic changes. It resolves Homebrew independently, initializes its environment, then installs package layers without upgrading unrelated packages.
 
 The Brewfiles remain in Git. `.chezmoiignore` prevents them from being materialized into the home directory.

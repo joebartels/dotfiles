@@ -13,7 +13,7 @@
 ### Task 1: Add Homebrew bootstrap and shell initialization
 
 **Files:**
-- Create: `run_before_00-install-homebrew.sh.tmpl`
+- Create: `run_once_before_00-install-homebrew.sh.tmpl`
 - Modify: `dot_zshrc`
 - Test: `tests/test-homebrew-bootstrap.sh`
 
@@ -90,6 +90,6 @@ Describe obtaining chezmoi before initialization, state that Homebrew is bootstr
 
 - [ ] **Step 4: Run full validation**
 
-Run: `bash tests/test-homebrew-bootstrap.sh && chezmoi apply --dry-run --verbose --source-path run_before_00-install-homebrew.sh.tmpl run_onchange_before_10-install-brew-bundles.sh.tmpl`
+Run: `bash tests/test-homebrew-bootstrap.sh && chezmoi apply --dry-run --verbose --source-path run_once_before_00-install-homebrew.sh.tmpl run_onchange_before_10-install-brew-bundles.sh.tmpl`
 
 Expected: exit 0; tests pass, both scripts render, and dry-run does not execute an installer or bundle.

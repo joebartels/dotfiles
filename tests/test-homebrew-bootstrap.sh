@@ -4,7 +4,7 @@ set -euo pipefail
 
 readonly test_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 readonly source_dir="$(cd -- "$test_dir/.." && pwd)"
-readonly template="$source_dir/run_before_00-install-homebrew.sh.tmpl"
+readonly template="$source_dir/run_once_before_00-install-homebrew.sh.tmpl"
 readonly bundle_template="$source_dir/run_onchange_before_10-install-brew-bundles.sh.tmpl"
 readonly legacy_bundle_template="$source_dir/run_onchange_before_install-packages.sh.tmpl"
 readonly chezmoiignore="$source_dir/.chezmoiignore"
