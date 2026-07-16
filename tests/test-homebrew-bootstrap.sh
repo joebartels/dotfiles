@@ -346,7 +346,7 @@ assert_manifest_declarations "$source_dir/Brewfile.base" \
   'brew "ghostscript"' \
   'brew "gnupg"' \
   'brew "imagemagick"' \
-  'brew "pnpm"' \
+  'brew "fnm"' \
   'brew "rtk"' \
   'brew "sqlc"' \
   'brew "tmux"' \
@@ -357,25 +357,12 @@ assert_manifest_declarations "$source_dir/Brewfile.base" \
 assert_manifest_declarations "$source_dir/Brewfile.darwin" \
   'cask "claude-code@latest"' \
   'cask "codex"' \
-  'cask "maccy"' \
-  'cask "visual-studio-code"' \
-  'vscode "anthropic.claude-code"' \
-  'vscode "davidanson.vscode-markdownlint"' \
-  'vscode "llvm-vs-code-extensions.lldb-dap"' \
-  'vscode "ms-python.debugpy"' \
-  'vscode "ms-python.python"' \
-  'vscode "ms-python.vscode-pylance"' \
-  'vscode "ms-python.vscode-python-envs"' \
-  'vscode "ms-vscode.cmake-tools"' \
-  'vscode "ms-vscode.cpp-devtools"' \
-  'vscode "ms-vscode.cpptools"' \
-  'vscode "ms-vscode.cpptools-extension-pack"' \
-  'vscode "ms-vscode.cpptools-themes"' \
-  'vscode "swiftlang.swift-vscode"' \
-  'vscode "tomoki1207.pdf"'
+  'cask "maccy"'
 assert_manifest_declarations "$source_dir/Brewfile.personal" 'brew "arduino-cli"'
 assert_manifest_declarations "$source_dir/Brewfile.linux"
-assert_manifest_declarations "$source_dir/Brewfile.work"
+assert_manifest_declarations "$source_dir/Brewfile.work" \
+  'tap "snowflakedb/snowflake-cli", trusted: { casks: ["snowflake-cli"] }' \
+  'cask "snowflake-cli"'
 assert_line "$source_dir/Brewfile.linux" '# Linux-specific Homebrew packages are declared here.'
 assert_line "$source_dir/Brewfile.work" '# Work-only Homebrew packages are declared here.'
 
