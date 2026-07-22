@@ -1,5 +1,7 @@
 # ==========================================================
 #  MANAGED BY CHEZMOI
+#  Purpose: Bootstrap Homebrew, Oh My Zsh, and custom functions
+#  Provides: ZSH, plugins, and custom function autoloading
 #  Edit:  chezmoi edit ~/.config/zsh/modules/000-shell-bootstrap.zsh
 #  Apply: chezmoi apply ~/.config/zsh
 # ==========================================================

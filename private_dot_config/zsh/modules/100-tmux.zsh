@@ -1,5 +1,7 @@
 # ==========================================================
 #  MANAGED BY CHEZMOI
+#  Purpose: Tmux shortcuts that expose their underlying commands
+#  Provides: tls, ta, tnew, td, trename, tkill
 #  Edit:  chezmoi edit ~/.config/zsh/modules/100-tmux.zsh
 #  Apply: chezmoi apply ~/.config/zsh
 # ==========================================================

@@ -1,5 +1,7 @@
 # ==========================================================
 #  MANAGED BY CHEZMOI
+#  Purpose: General cross-platform shell conveniences
+#  Provides: ls, pathn, GPG_TTY
 #  Edit:  chezmoi edit ~/.config/zsh/modules/100-shell-utilities.zsh
 #  Apply: chezmoi apply ~/.config/zsh
 # ==========================================================

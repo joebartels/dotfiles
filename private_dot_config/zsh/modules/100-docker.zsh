@@ -1,5 +1,7 @@
 # ==========================================================
 #  MANAGED BY CHEZMOI
+#  Purpose: Docker shortcuts and cleanup helpers
+#  Provides: docker-kill, docker-reset, dpsa/dsp/dst/dex/di/ds/drm/dfrm
 #  Edit:  chezmoi edit ~/.config/zsh/modules/100-docker.zsh
 #  Apply: chezmoi apply ~/.config/zsh
 # ==========================================================

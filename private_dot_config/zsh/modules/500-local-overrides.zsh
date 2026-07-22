@@ -1,5 +1,7 @@
 # ==========================================================
 #  MANAGED BY CHEZMOI
+#  Purpose: Load untracked machine-specific shell settings
+#  Provides: ~/.zshrc.local overrides
 #  Edit:  chezmoi edit ~/.config/zsh/modules/500-local-overrides.zsh
 #  Apply: chezmoi apply ~/.config/zsh
 # ==========================================================

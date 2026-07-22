@@ -1,5 +1,7 @@
 # ==========================================================
 #  MANAGED BY CHEZMOI
+#  Purpose: Select and inspect the active Java installation
+#  Provides: jh, JAVA_HOME
 #  Edit:  chezmoi edit ~/.config/zsh/modules/100-java.zsh
 #  Apply: chezmoi apply ~/.config/zsh
 # ==========================================================
