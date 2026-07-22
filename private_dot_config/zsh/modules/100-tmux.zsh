@@ -14,11 +14,11 @@ function _tmux_run() {
   command "${tmux_command[@]}"
 }
 
-function tls() {
+function tmls() {
   _tmux_run list-sessions
 }
 
-function tnew() {
+function tmnew() {
   if (( $# > 1 )); then
     print -u2 -- "Usage: tnew [session-name]"
     return 2
@@ -31,7 +31,7 @@ function tnew() {
   fi
 }
 
-function ta() {
+function tma() {
   if (( $# != 1 )); then
     print -u2 -- "Usage: ta [session-name]"
     return 2
@@ -40,11 +40,11 @@ function ta() {
   _tmux_run new-session -A -s "$1"
 }
 
-function td() {
+function tmd() {
   _tmux_run detach-client
 }
 
-function trename() {
+function tmrename() {
   if (( $# != 1 )); then
     print -u2 -- "Usage: trename <new-session-name>"
     return 2
@@ -53,7 +53,7 @@ function trename() {
   _tmux_run rename-session "$1"
 }
 
-function tkill() {
+function tmkill() {
   if (( $# != 1 )); then
     print -u2 -- "Usage: tkill <session-name>"
     return 2
