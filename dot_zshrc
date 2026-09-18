@@ -19,3 +19,10 @@ for _zsh_module in \
 done
 
 unset _zsh_module
+
+# ==========================================================
+#
+# Anything below this line should not be here.
+# Either add to .zshrc.local or include inside a zsh/modules ^
+#
+# ==========================================================
