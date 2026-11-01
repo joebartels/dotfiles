@@ -12,6 +12,7 @@ fail() { printf 'FAIL: %s\n' "$*" >&2; exit 1; }
 # Copy only the assigned configuration: no external downloads or package scripts.
 mkdir -p "$tmp_dir/source/private_dot_config/zsh/modules" "$tmp_dir/home" "$tmp_dir/bin" "$tmp_dir/empty-bin"
 cp -R "$source_dir/private_dot_config/nvim" "$tmp_dir/source/private_dot_config/"
+cp "$source_dir/.chezmoiignore" "$source_dir/README.md" "$tmp_dir/source/"
 cp "$source_dir/private_dot_config/zsh/modules/100-neovim.zsh" "$tmp_dir/source/private_dot_config/zsh/modules/"
 cp "$source_dir/dot_zshrc" "$tmp_dir/source/"
 : >"$tmp_dir/chezmoi.toml"
@@ -19,10 +20,21 @@ HOME="$tmp_dir/home" "$chezmoi_bin" --config "$tmp_dir/chezmoi.toml" \
   --source "$tmp_dir/source" --destination "$tmp_dir/home" \
   --persistent-state "$tmp_dir/state.json" --refresh-externals=never --force --no-tty apply
 
-for file in init.lua lua/config/lazy.lua lua/plugins/init.lua; do
+for file in init.lua lua/config/lazy.lua lua/plugins/init.lua README.md lazy-lock.json; do
   cmp -s "$source_dir/private_dot_config/nvim/$file" "$tmp_dir/home/.config/nvim/$file" || fail "unmanaged or changed nvim/$file"
 done
-[[ "$(find "$tmp_dir/home/.config/nvim" -type f | wc -l | tr -d ' ')" == 3 ]] || fail 'unexpected Neovim runtime files'
+# Compare file sets instead of a fixed count so future plugin specs are allowed,
+# while still rejecting generated runtime files in the applied configuration.
+(cd "$source_dir/private_dot_config/nvim" && find . -type f | LC_ALL=C sort) >"$tmp_dir/expected-files"
+(cd "$tmp_dir/home/.config/nvim" && find . -type f | LC_ALL=C sort) >"$tmp_dir/actual-files"
+cmp -s "$tmp_dir/expected-files" "$tmp_dir/actual-files" || fail 'unexpected Neovim runtime files'
+[[ ! -e "$tmp_dir/home/README.md" ]] || fail 'root README ignore rule not applied'
+# Parse with chezmoi rather than depending on Neovim, jq, or Python.
+lock_status="$(NVIM_LOCK_JSON="$(cat "$tmp_dir/home/.config/nvim/lazy-lock.json")" \
+  "$chezmoi_bin" --config "$tmp_dir/chezmoi.toml" execute-template \
+  '{{ $lock := fromJson (env "NVIM_LOCK_JSON") }}{{ if regexMatch "^[0-9a-f]{40}$" (index $lock "lazy.nvim" "commit") }}valid{{ end }}')" \
+  || fail 'invalid lazy-lock.json'
+[[ "$lock_status" == valid ]] || fail 'lazy.nvim lock entry must contain a full commit hash'
 cmp -s "$source_dir/private_dot_config/zsh/modules/100-neovim.zsh" \
   "$tmp_dir/home/.config/zsh/modules/100-neovim.zsh" || fail 'Neovim module not managed'
 

@@ -34,9 +34,12 @@ Keep machine-specific settings in `~/.zshrc.local`.
 Neovim's Lua configuration is managed separately under `private_dot_config/nvim/`.
 It uses lazy.nvim with an empty plugin spec, not the LazyVim distribution.
 Homebrew installs Neovim and its bootstrap/finder dependencies on macOS and Linux.
-The first launch downloads lazy.nvim; plugin data, caches, state, and generated
-lockfiles are not included in the source. The shell module does not launch Neovim
-and leaves existing `vi`/`vim` commands or aliases alone when `nvim` is absent.
+The first launch downloads lazy.nvim; plugin data, caches, and state are not
+included in the source. The generated `lazy-lock.json` and Neovim README are
+managed. See `~/.config/nvim/README.md` for shared plugin workflows; receiving
+machines use `:Lazy restore`, not `:Lazy sync`, after `chezmoi update`.
+The shell module does not launch Neovim and leaves existing `vi`/`vim` commands
+or aliases alone when `nvim` is absent.
 
 - Tool-specific setting or helper: existing or new `100-<tool>.zsh`
 - General shell behavior: `100-shell-utilities.zsh`

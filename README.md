@@ -19,13 +19,13 @@
 
 ## Neovim
 
-`~/.config/nvim/init.lua`, `lua/config/lazy.lua`, and `lua/plugins/init.lua` are managed under `private_dot_config/nvim/`. This preserves the existing **lazy.nvim** plugin-manager bootstrap with an empty plugin spec; it is not the **LazyVim** distribution. The managed `100-neovim.zsh` module aliases `vi` and `vim` to `nvim` only when it is available.
+`~/.config/nvim/init.lua`, `lua/config/lazy.lua`, `lua/plugins/init.lua`, `README.md`, and `lazy-lock.json` are managed under `private_dot_config/nvim/`. This preserves the existing **lazy.nvim** plugin-manager bootstrap with an empty plugin spec; it is not the **LazyVim** distribution. See [`private_dot_config/nvim/README.md`](private_dot_config/nvim/README.md) (also deployed to `~/.config/nvim/README.md`) for editing, plugin declarations, and cross-machine workflows. The managed `100-neovim.zsh` module aliases `vi` and `vim` to `nvim` only when it is available.
 
 `Brewfile.base` installs Neovim, Git (for the bootstrap), ripgrep, and fd on both macOS and Linux; fzf is also included. The normal apply/bootstrap and checksum-triggered bundle reconciliation above handle these packages on each machine, without reinstalling on every apply. Do not assume Debian's `apt` Neovim version is recent enough for lazy.nvim: this setup uses Homebrew's Neovim on Linux too. Install Homebrew's Linux prerequisites first (on Debian/Ubuntu: `sudo apt-get update && sudo apt-get install build-essential procps curl file git`); the interactive Homebrew installer may require sudo and network access.
 
-The first `nvim` launch needs network access to clone lazy.nvim; its update checker also uses the network. Downloaded plugins and Neovim data/cache/state directories are not managed. Generated `lazy-lock.json` is not included in the managed source either; add it deliberately if plugin version pinning is wanted later. Applying these files does not launch Neovim or install plugins.
+The first `nvim` launch needs network access to clone lazy.nvim; its update checker also uses the network. Downloaded plugins and Neovim data/cache/state directories are not managed. The lazy.nvim-generated `lazy-lock.json` is shared: after first-machine init/apply or a receiving machine's `chezmoi update`, run `:Lazy restore`, not `:Lazy sync`, to restore locked plugin revisions without unintended upgrades. Preserve local target edits before applying/updating. Applying these files does not launch Neovim or install plugins.
 
-The work profile's Snowflake cask is macOS-only and is skipped on Linux; this does not provision Snowflake on Linux. Repository documentation and tests are source-only and are not copied into the home directory.
+The work profile's Snowflake cask is macOS-only and is skipped on Linux; this does not provision Snowflake on Linux. Root repository documentation and tests are source-only; the Neovim README is deployed with its configuration.
 
 ## Notes
 - Oh My Zsh installs via `run_once_install-oh-my-zsh.sh`; custom plugins/themes are pulled from `.chezmoiexternal.toml`.
