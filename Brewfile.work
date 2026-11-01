@@ -1,4 +1,6 @@
 # Work-only Homebrew packages are declared here.
 
-tap "snowflakedb/snowflake-cli", trusted: { casks: ["snowflake-cli"] }
-cask "snowflake-cli"
+if OS.mac?
+  tap "snowflakedb/snowflake-cli", trusted: { casks: ["snowflake-cli"] }
+  cask "snowflake-cli"
+end

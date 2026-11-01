@@ -7,12 +7,18 @@ brew "gemini-cli"
 brew "gh"
 # Interpreter for PostScript and PDF
 brew "ghostscript"
+# Git is required by the lazy.nvim bootstrap
+brew "git"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # fnm - Fast Node Manager
 brew "fnm"
+# Neovim and common finder dependencies
+brew "neovim"
+brew "ripgrep"
+brew "fd"
 # CLI proxy to minimize LLM token consumption
 brew "rtk"
 # Generate type safe Go from SQL

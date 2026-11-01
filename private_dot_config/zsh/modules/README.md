@@ -22,6 +22,7 @@ Keep machine-specific settings in `~/.zshrc.local`.
 | `000-shell-bootstrap.zsh` | Homebrew, Oh My Zsh, and function autoloading |
 | `100-docker.zsh` | Docker aliases and cleanup helpers |
 | `100-java.zsh` | Java selection and `jh` |
+| `100-neovim.zsh` | `vi`/`vim` aliases, only when `nvim` is available |
 | `100-shell-utilities.zsh` | General shell aliases and helpers |
 | `100-tmux.zsh` | Tmux session shortcuts |
 | `400-powerlevel10k.zsh` | Prompt configuration |
@@ -29,6 +30,13 @@ Keep machine-specific settings in `~/.zshrc.local`.
 | `600-initialize-java-home.zsh` | Initializes Java after local overrides |
 
 ## Where should it go?
+
+Neovim's Lua configuration is managed separately under `private_dot_config/nvim/`.
+It uses lazy.nvim with an empty plugin spec, not the LazyVim distribution.
+Homebrew installs Neovim and its bootstrap/finder dependencies on macOS and Linux.
+The first launch downloads lazy.nvim; plugin data, caches, state, and generated
+lockfiles are not included in the source. The shell module does not launch Neovim
+and leaves existing `vi`/`vim` commands or aliases alone when `nvim` is absent.
 
 - Tool-specific setting or helper: existing or new `100-<tool>.zsh`
 - General shell behavior: `100-shell-utilities.zsh`

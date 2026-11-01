@@ -9,6 +9,7 @@ readonly bundle_template="$source_dir/run_onchange_before_10-install-brew-bundle
 readonly legacy_bundle_template="$source_dir/run_onchange_before_install-packages.sh.tmpl"
 readonly chezmoiignore="$source_dir/.chezmoiignore"
 readonly zshrc="$source_dir/dot_zshrc"
+readonly shell_bootstrap="$source_dir/private_dot_config/zsh/modules/000-shell-bootstrap.zsh"
 readonly readme="$source_dir/README.md"
 
 tmp_dir="$(mktemp -d)"
@@ -261,17 +262,20 @@ cmp -s "$expected_curl_failure_output" "$empty_curl_failure_output" || \
   fail "expected an exact Homebrew installer empty-download failure diagnostic"
 
 assert_contains "$zshrc" '[[ -o interactive ]] || return'
-assert_contains "$zshrc" '/opt/homebrew/bin'
-assert_contains "$zshrc" '/usr/local/bin'
-assert_contains "$zshrc" '/home/linuxbrew/.linuxbrew/bin'
-assert_contains "$zshrc" '"$HOME/.linuxbrew/bin"'
-assert_contains "$zshrc" 'eval "$(brew shellenv)"'
-assert_before "$zshrc" '[[ -o interactive ]] || return' '/opt/homebrew/bin'
-assert_before "$zshrc" 'eval "$(brew shellenv)"' 'source "$ZSH/oh-my-zsh.sh"'
+assert_contains "$zshrc" '"${XDG_CONFIG_HOME:-$HOME/.config}/zsh/modules/"*.zsh(.N)'
+assert_before "$zshrc" '[[ -o interactive ]] || return' 'source "$_zsh_module"'
+assert_contains "$shell_bootstrap" '/opt/homebrew/bin'
+assert_contains "$shell_bootstrap" '/usr/local/bin'
+assert_contains "$shell_bootstrap" '/home/linuxbrew/.linuxbrew/bin'
+assert_contains "$shell_bootstrap" '"$HOME/.linuxbrew/bin"'
+assert_contains "$shell_bootstrap" 'eval "$(brew shellenv)"'
+assert_before "$shell_bootstrap" 'eval "$(brew shellenv)"' 'source "$ZSH/oh-my-zsh.sh"'
 
 zsh_home="$tmp_dir/zsh-home"
 zsh_bin_dir="$tmp_dir/zsh-bin"
 mkdir -p "$zsh_home/.oh-my-zsh" "$zsh_bin_dir"
+mkdir -p "$zsh_home/.config/zsh/modules"
+cp "$shell_bootstrap" "$zsh_home/.config/zsh/modules/"
 
 cat >"$zsh_bin_dir/brew" <<'EOF'
 #!/bin/sh
@@ -286,6 +290,7 @@ print -r -- "${HOMEBREW_SHELLENV_EVALUATED:-}" > "$HOME/omz-shellenv-state"
 EOF
 
 HOME="$zsh_home" \
+  XDG_CONFIG_HOME="$zsh_home/.config" XDG_CACHE_HOME="$zsh_home/.cache" \
   PATH="$zsh_bin_dir" \
   ZSHRC_UNDER_TEST="$zshrc" \
   "$zsh_bin" -dfi -c 'source "$ZSHRC_UNDER_TEST" 2>/dev/null; [[ "${HOMEBREW_SHELLENV_EVALUATED:-}" == 1 ]]'
@@ -295,6 +300,8 @@ fallback_zsh_home="$tmp_dir/fallback-zsh-home"
 fallback_zsh_bin_dir="$tmp_dir/fallback-zsh-bin"
 fallback_zshrc="$tmp_dir/fallback-dot-zshrc"
 mkdir -p "$fallback_zsh_home/.linuxbrew/bin" "$fallback_zsh_home/.oh-my-zsh" "$fallback_zsh_bin_dir"
+mkdir -p "$fallback_zsh_home/.config/zsh/modules"
+cp "$zshrc" "$fallback_zshrc"
 
 cat >"$fallback_zsh_home/.linuxbrew/bin/brew" <<'EOF'
 #!/bin/sh
@@ -312,8 +319,9 @@ sed \
   -e "s|/opt/homebrew/bin|$tmp_dir/no-homebrew/opt/homebrew/bin|g" \
   -e "s|/usr/local/bin|$tmp_dir/no-homebrew/usr/local/bin|g" \
   -e "s|/home/linuxbrew/.linuxbrew/bin|$tmp_dir/no-homebrew/home/linuxbrew/.linuxbrew/bin|g" \
-  "$zshrc" >"$fallback_zshrc"
+  "$shell_bootstrap" >"$fallback_zsh_home/.config/zsh/modules/000-shell-bootstrap.zsh"
 if ! HOME="$fallback_zsh_home" \
+  XDG_CONFIG_HOME="$fallback_zsh_home/.config" XDG_CACHE_HOME="$fallback_zsh_home/.cache" \
   PATH="$fallback_zsh_bin_dir" \
   ZSHRC_UNDER_TEST="$fallback_zshrc" \
   "$zsh_bin" -dfi -c '[[ -z "$(command -v brew)" ]] || exit 1; source "$ZSHRC_UNDER_TEST" 2>/dev/null; [[ "$(command -v brew)" == "$HOME/.linuxbrew/bin/brew" ]] && [[ "${HOMEBREW_SHELLENV_EVALUATED:-}" == home-prefix ]]'; then
@@ -323,6 +331,7 @@ fi
 
 rm -f "$zsh_home/omz-shellenv-state"
 HOME="$zsh_home" \
+  XDG_CONFIG_HOME="$zsh_home/.config" XDG_CACHE_HOME="$zsh_home/.cache" \
   PATH="$zsh_bin_dir" \
   ZSHRC_UNDER_TEST="$zshrc" \
   HOMEBREW_SHELLENV_EVALUATED= \
@@ -344,12 +353,17 @@ assert_manifest_declarations "$source_dir/Brewfile.base" \
   'brew "gemini-cli"' \
   'brew "gh"' \
   'brew "ghostscript"' \
+  'brew "git"' \
   'brew "gnupg"' \
   'brew "imagemagick"' \
   'brew "fnm"' \
+  'brew "neovim"' \
+  'brew "ripgrep"' \
+  'brew "fd"' \
   'brew "rtk"' \
   'brew "sqlc"' \
   'brew "tmux"' \
+  'brew "fzf"' \
   'brew "go"' \
   'go "golang.org/x/tools/cmd/goimports"' \
   'go "connectrpc.com/connect/cmd/protoc-gen-connect-go"' \
@@ -361,8 +375,10 @@ assert_manifest_declarations "$source_dir/Brewfile.darwin" \
 assert_manifest_declarations "$source_dir/Brewfile.personal" 'brew "arduino-cli"'
 assert_manifest_declarations "$source_dir/Brewfile.linux"
 assert_manifest_declarations "$source_dir/Brewfile.work" \
-  'tap "snowflakedb/snowflake-cli", trusted: { casks: ["snowflake-cli"] }' \
-  'cask "snowflake-cli"'
+  'if OS.mac?' \
+  '  tap "snowflakedb/snowflake-cli", trusted: { casks: ["snowflake-cli"] }' \
+  '  cask "snowflake-cli"' \
+  'end'
 assert_line "$source_dir/Brewfile.linux" '# Linux-specific Homebrew packages are declared here.'
 assert_line "$source_dir/Brewfile.work" '# Work-only Homebrew packages are declared here.'
 

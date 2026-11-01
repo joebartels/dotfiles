@@ -4,3 +4,6 @@ Brewfile.darwin
 Brewfile.linux
 Brewfile.personal
 Brewfile.work
+/README.md
+/docs/
+/tests/
